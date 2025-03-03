@@ -1,4 +1,4 @@
-# dissecting_databases
+# Dissecting Databases
 
 ## General (I will still use postgres as an example, but it should apply to most other DBs)
 
