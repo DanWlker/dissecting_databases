@@ -63,9 +63,6 @@
     - [`concat` is stable but not immutable](https://www.postgresql.org/message-id/3361.1410026366%40sss.pgh.pa.us)  because for stuff like `TIMESTAMPZ`, its output depends on the timezone. Unless you do something like [this](https://stackoverflow.com/questions/54372666/create-an-immutable-clone-of-concat-ws/54384767#54384767) where it only accepts text, then it is immutable.
     - [The same thing applies to `to_char`](https://dba.stackexchange.com/questions/77272/why-isnt-to-char-immutable-and-how-can-i-work-around-it)
 
-  
-1. TODO: Triggers like `BEFORE`
-
 ## Postgres specific
 
 1. [There is no (or negligable) difference between varchar and text](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
