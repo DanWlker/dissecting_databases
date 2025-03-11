@@ -82,6 +82,38 @@
          Here, the index_predicate is WHERE active = true. PostgreSQL will use the partial index on username (but only when active = true) to handle the conflict
          
    - For `ON CONFLICT DO NOTHING`, it is **optional** to specify a `conflict_target`; when omitted, conflicts with all usable constraints (and unique indexes) are handled. It means that PostgreSQL will check for conflicts against all usable constraints and unique indexes on the table. So, if the table has multiple unique constraints or unique indexes, PostgreSQL will consider all of them for conflict detection.
+  
+1. Insert Into Select
+   - Normally this is used to copy data from one table and insert it into another
+     ```sql
+     INSERT INTO Customers (CustomerName, City, Country)
+     SELECT SupplierName, City, Country FROM Suppliers;
+     ```
+   - However it could also be repurposed to be similar to Upsert but without the index requirement (but there is a reason why it is required so you should know the tradeoffs).
+   - Also has the advantage where you can Insert if not exist, making the operation atomic and preventing race conditions (you don't have to split finding and inserting into two queries, though upsert works as well)
+   - Add another column `insert_success` to help determine if the row returned is from insert or existing
+     ```sql 
+		with insert_not_exist as (
+			insert into your_table(col1, col2) 
+			select :col1, :col2
+			where not exists (
+				select 1 
+				from your_table 
+				where
+                 col1 = :col1 and
+                 col2 = :col2
+			)
+			returning *, true as insert_success -- this tells you if the row returned is from insert or existing
+		)
+		select *
+		from insert_not_exist
+		union
+		select *, false as insert_success
+		from your_table
+		where
+             col1 = :col1 and
+             col2 = :col2
+     ```
 
 ## Postgres specific
 
