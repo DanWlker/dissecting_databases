@@ -63,26 +63,6 @@
     - [`concat` is stable but not immutable](https://www.postgresql.org/message-id/3361.1410026366%40sss.pgh.pa.us)  because for stuff like `TIMESTAMPZ`, its output depends on the timezone. Unless you do something like [this](https://stackoverflow.com/questions/54372666/create-an-immutable-clone-of-concat-ws/54384767#54384767) where it only accepts text, then it is immutable.
     - [The same thing applies to `to_char`](https://dba.stackexchange.com/questions/77272/why-isnt-to-char-immutable-and-how-can-i-work-around-it)
   
-1. Upsert [On Conflict clause](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
-   - `conflict_targets` can be:
-       - One or more columns of the table (e.g., column1, column2)
-       - Expressions on columns (e.g., LOWER(column1) or column1 + column2)
-   - However, they must be unique indexes. PostgreSQL tries to automatically infer the unique index that applies to the `conflict_target`. It looks at all unique indexes on the table and finds one that matches the columns or expressions specified in the `conflict_target`
-   - If `conflict_targes` is a partial unique index, it will only be used if the `index_predicate` matches the predicate of the index. Ex.
-       - You have a partial index:
-         ```sql
-         CREATE UNIQUE INDEX username_active_unique ON users (username) WHERE active = true;
-         ```
-       - If you want to use this index in an ON CONFLICT clause, you would need to specify an `index_predicate`
-         ```sql
-         INSERT INTO users (username, email, active)
-         VALUES ('user1', 'user@example.com', true)
-         ON CONFLICT (username) WHERE active = true DO UPDATE SET email = EXCLUDED.email;
-         ```
-         Here, the index_predicate is WHERE active = true. PostgreSQL will use the partial index on username (but only when active = true) to handle the conflict
-         
-   - For `ON CONFLICT DO NOTHING`, it is **optional** to specify a `conflict_target`; when omitted, conflicts with all usable constraints (and unique indexes) are handled. It means that PostgreSQL will check for conflicts against all usable constraints and unique indexes on the table. So, if the table has multiple unique constraints or unique indexes, PostgreSQL will consider all of them for conflict detection.
-  
 1. Insert Into Select
    - Normally this is used to copy data from one table and insert it into another
      ```sql
@@ -125,4 +105,28 @@
 
 1. [Single column value hard limit is 1GB](https://stackoverflow.com/a/39966079)
 
-1. [Maximum size for row, table, db from postgres wiki](https://wiki.postgresql.org/wiki/FAQ#What_is_the_maximum_size_for_a_row.2C_a_table.2C_and_a_database.3F) 
+1. [Maximum size for row, table, db from postgres wiki](https://wiki.postgresql.org/wiki/FAQ#What_is_the_maximum_size_for_a_row.2C_a_table.2C_and_a_database.3F)
+
+1. Upsert [On Conflict clause](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT)
+   - `conflict_targets` can be:
+       - One or more columns of the table (e.g., column1, column2)
+       - Expressions on columns (e.g., LOWER(column1) or column1 + column2)
+   - However, they must be unique indexes. PostgreSQL tries to automatically infer the unique index that applies to the `conflict_target`. It looks at all unique indexes on the table and finds one that matches the columns or expressions specified in the `conflict_target`
+   - If `conflict_targes` is a partial unique index, it will only be used if the `index_predicate` matches the predicate of the index. Ex.
+       - You have a partial index:
+         ```sql
+         CREATE UNIQUE INDEX username_active_unique ON users (username) WHERE active = true;
+         ```
+       - If you want to use this index in an ON CONFLICT clause, you would need to specify an `index_predicate`
+         ```sql
+         INSERT INTO users (username, email, active)
+         VALUES ('user1', 'user@example.com', true)
+         ON CONFLICT (username) WHERE active = true DO UPDATE SET email = EXCLUDED.email;
+         ```
+         Here, the index_predicate is WHERE active = true. PostgreSQL will use the partial index on username (but only when active = true) to handle the conflict
+         
+   - For `ON CONFLICT DO NOTHING`, it is **optional** to specify a `conflict_target`; when omitted, conflicts with all usable constraints (and unique indexes) are handled. It means that PostgreSQL will check for conflicts against all usable constraints and unique indexes on the table. So, if the table has multiple unique constraints or unique indexes, PostgreSQL will consider all of them for conflict detection.
+
+1. Postgres Upsert with `RETURNING` clause will not return if the insert conflicts (aka. no insert is done). To return data, try [this](https://stackoverflow.com/a/42217872) 
+
+1. [`NULL DISTINCT`](https://www.postgresql.org/docs/current/indexes-unique.html) is default when creating indexes, meaning null values in a unique column are not considered equal, allowing multiple nulls in the column. Use `NULLS NOT DISTINCT` to modify this behaviour
