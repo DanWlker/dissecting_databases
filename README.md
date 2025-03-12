@@ -94,6 +94,13 @@
              col1 = :col1 and
              col2 = :col2
      ```
+1. You can create [partial unique indexes](https://www.postgresql.org/docs/current/indexes-partial.html) which is indexes that only apply when a condition satisfies
+
+   > A partial index is an index built over a subset of a table; the subset is defined by a conditional expression (called the predicate of the partial index). The index contains entries only for those table rows that satisfy the predicate.
+
+   This also helps when we want partial but unique indexes
+   
+   > We wish to ensure that there is only one “successful” entry for a given subject and target combination, but there might be any number of “unsuccessful” entries.
 
 ## Postgres specific
 
