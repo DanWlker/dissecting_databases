@@ -102,6 +102,18 @@
    
    > We wish to ensure that there is only one “successful” entry for a given subject and target combination, but there might be any number of “unsuccessful” entries.
 
+   ```sql
+   CREATE TABLE tests (
+   	subject text,
+   	target text,
+   	success boolean,
+   	...
+   );
+	
+   CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
+   	WHERE success;
+   ```
+
 ## Postgres specific
 
 1. [There is no (or negligable) difference between varchar and text](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
