@@ -149,3 +149,5 @@
 1. Postgres Upsert with `RETURNING` clause will not return if the insert conflicts (aka. no insert is done). To return data, try [this](https://stackoverflow.com/a/42217872) 
 
 1. [`NULL DISTINCT`](https://www.postgresql.org/docs/current/indexes-unique.html) is default when creating indexes, meaning null values in a unique column are not considered equal, allowing multiple nulls in the column. Use `NULLS NOT DISTINCT` to modify this behaviour
+  
+1. Use `SELECT current_database()` to see the name of the current database [1](https://dba.stackexchange.com/a/58332), `\conninfo` works as well [2](https://dba.stackexchange.com/a/78670)
