@@ -153,3 +153,5 @@
 1. Use `SELECT current_database()` to see the name of the current database [1](https://dba.stackexchange.com/a/58332), `\conninfo` works as well [2](https://dba.stackexchange.com/a/78670). To see all databases use `SELECT * from pg_database`
 
 1. Postgres can have multiple databases [1](https://www.postgresql.org/docs/current/manage-ag-overview.html)
+
+1. [How to clone a postgres db](https://medium.com/preprintblog/how-to-copy-a-postgresql-database-to-a-new-one-in-the-same-instance-on-aws-rds-a632a1b7e83c)
