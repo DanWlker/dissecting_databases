@@ -154,4 +154,9 @@
 
 1. Postgres can have multiple databases [1](https://www.postgresql.org/docs/current/manage-ag-overview.html)
 
-1. [How to clone a postgres db](https://medium.com/preprintblog/how-to-copy-a-postgresql-database-to-a-new-one-in-the-same-instance-on-aws-rds-a632a1b7e83c)
+1. How to clone a postgres db [1](https://medium.com/preprintblog/how-to-copy-a-postgresql-database-to-a-new-one-in-the-same-instance-on-aws-rds-a632a1b7e83c) [2](https://www.atlassian.com/data/sql/how-to-create-a-copy-of-a-database-in-postgresql)
+
+1. Postgres has [tablespaces](https://www.postgresql.org/docs/current/manage-ag-tablespaces.html) that allow dba to define locations in file systems where the files representing database objects can be stored. This is useful when:
+
+   - If the partition or volume on which the cluster was initialized runs out of space and cannot be extended, a tablespace can be created on a different partition and used until the system can be reconfigured.
+   - An index which is very heavily used can be placed on a very fast, highly available disk, such as an expensive solid state device. At the same time a table storing archived data which is rarely used or not performance critical could be stored on a less expensive, slower disk system.
