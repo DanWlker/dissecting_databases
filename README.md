@@ -120,9 +120,9 @@
    -  36 characters (8-4-4-4-12 format including hypens)
    -  typically lowercase
    -  5 versions
-   	- 1 & 2 : time and mac address based
-   	- 3 & 5 namespace based
-   	- 4 generated randomly 
+   		- 1 & 2 : time and mac address based
+   		- 3 & 5 namespace based
+   		- 4 generated randomly 
 
 ## Postgres specific
 
