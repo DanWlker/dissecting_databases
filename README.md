@@ -113,6 +113,16 @@
    CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
    	WHERE success;
    ```
+1. [What are uuids and should you use them](https://blog.boot.dev/clean-code/what-are-uuids-and-should-you-use-them/)
+
+   -  Useful to avoid future problems (ex. acquired company merging db with users table as well)
+   -  Uuids take up more memory, and is slightly more complicated than incrementing an int
+   -  36 characters (8-4-4-4-12 format including hypens)
+   -  typically lowercase
+   -  5 versions
+   	- 1 & 2 : time and mac address based
+   	- 3 & 5 namespace based
+   	- 4 generated randomly 
 
 ## Postgres specific
 
