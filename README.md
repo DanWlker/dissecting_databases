@@ -170,3 +170,37 @@
 
    - If the partition or volume on which the cluster was initialized runs out of space and cannot be extended, a tablespace can be created on a different partition and used until the system can be reconfigured.
    - An index which is very heavily used can be placed on a very fast, highly available disk, such as an expensive solid state device. At the same time a table storing archived data which is rarely used or not performance critical could be stored on a less expensive, slower disk system.
+  
+1. Unique Index vs Unique Constraint
+
+	- [Re: Unique index VS unique constraint](https://www.postgresql.org/message-id/CAO8h7BJMX5V1TqzScTx2Nr1jH5iUFG8A071y-g1b_kdzpu9PDw%40mail.gmail.com)
+		- Unique indexes can be partial, i.e. defined with a where clause
+	 	- A constraint says what valid data looks like.
+		- An index stores data in such a way as to enhance search performance.
+	 	- Uniqueness is a constraint.  It happens to be implemented via the creation of a unique index since an index is quickly able to search all existing values in order to determine if a given value already exists. The unique index is just a tool the constrain uses to perform its function. This index will be created automatically when you add the constraint
+		- PostgreSQL has chosen to allow a user to create a unique index directly, instead of only via a constraint, but one should not do so.  The uniqueness property is a constraint and so a "unique index" without a corresponding constraint is an improper model.
+	 	- Conceptually the index is an implementation detail and uniqueness should be associated only with constraints.
+   		- [Follow Up](https://www.postgresql.org/message-id/CAL_0b1uAZLLLipu0_RhcqrsAE1WkBJVYHHOfHuP1VcZVMzKAtg%40mail.gmail.com)
+     - [PostgreSQL docs on Unique Indexes](https://www.postgresql.org/docs/9.4/indexes-unique.html)
+     	- The preferred way to add a unique constraint to a table is ALTER TABLE ... ADD CONSTRAINT.
+      	- The use of indexes to enforce unique constraints could be considered an implementation detail that should not be accessed directly.
+       	- One should, however, be aware that there's no need to manually create indexes on unique columns; doing so would just duplicate the automatically-created index.
+	- [Unique Index vs Unique Constraint in PostgreSQL: Which to use?](https://database.guide/unique-index-vs-unique-constraint-in-postgresql-which-to-use/)
+ 		- Use a UNIQUE index when you need more control over indexing behavior, such as when creating a partial unique index or enforcing uniqueness on an expression (eg. LOWER(column_name))
+     	- a UNIQUE constraint cannot be partial, meaning it applies to all rows in the table. a
+      	- a UNIQUE index, on the other hand, can be partial, meaning it applies only to a subset of rows based on a condition.
+      	- The documentation suggests using UNIQUE indexes in more advanced cases where you need partial indexing
+    - [Stack Overflow: Postgres conditionally unique constraint](https://stackoverflow.com/questions/16236365/postgresql-conditionally-unique-constraint/16236566#16236566)
+    - [Medium: Understanding the key differences between unique index, index, unique constraint and primary key](https://daminibansal.medium.com/understanding-the-key-differences-unique-index-index-unique-constraint-and-primary-key-in-sql-6cf23c5e3a60)
+    - To check whether a unique (non partial) index is created correctly, check:
+
+    	```sql
+		SELECT * FROM pg_constraint ; 
+		SELECT * FROM pg_indexes;
+     	```
+    - When dropping a unique index, you should drop the constraint first, then the index. Usually dropping the constraint will be enough (unless something goes wrong, use the command above to verify)
+
+		```sql
+		ALTER TABLE your_table DROP CONSTRAINT IF EXISTS your_constraint;
+    	DROP INDEX IF EXISTS your_constraint;
+    	```
