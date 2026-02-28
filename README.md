@@ -126,6 +126,33 @@
   
 1. [Database Indexes - You Might Be Using Them Wrong](https://www.youtube.com/watch?v=RufupUDBtYY)
 
+	- Composite index
+ 		- Equality first, range second
+ 		- Left most prefix rule (composite index usable only for queries that filter on the leading rule, or all two, or all three etc.)
+     	- Basically for composite index order matters due to how btree scans in layers
+   	- Number of selects affect as well, too much select would cause table lookups (which is a random read) to cause more than a sequential scan
+		- Can be solved by `Covering Index`, which is an index that contains all colomns the query needs. To know if this is working:
+   			- Postgres will print `Index Only Scan`
+   	  		- MySQL will print `Using Index`
+   	    	- SQL server will print `No Key Lookup required`
+   	     - Posgres and SQL server offer `Include` clause to attach columns to the leaf node without adding them to the sort order in your composite index
+   	     	- `CREATE INDEX ... on TABLE(col1, col2) INCLUDE(col3, col4)`
+   	- Cover HOT queries, not everything. aka cover only frequest queries
+   	- Indexes has a cost
+   		- every operation now requires writes to all indexes
+   	 	- buffer pool in ram grow larger, less indexes can be fit in ram which requires disk read
+   	- Sometimes index is less efficient than full scan
+   	- Low Cardinality (like enum type columns) could cause individual indexes to still have multiple rows associated with them. Sequential scan often cheaper. Even distribution is the thing here that makes the index useless
+   	- You can also create partial indexes for skewed values, which makes it far more efficient
+   	- When to skip indexes:
+   		- rarely filteres columds
+   	 	- low cardinality
+   	  	- "might need this index"
+   	- To track used indexes:
+   		- Postgres: pg_stat_user_indexes -> idx_scan = 0
+   	 	- MySQL: sys.schema_unused_indexes
+   	  	- SQL Server: sym.dm_db_index_usage_stats
+ 
 ## Postgres specific
 
 1. [There is no (or negligable) difference between varchar and text](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
