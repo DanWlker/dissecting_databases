@@ -122,7 +122,9 @@
    -  5 versions
    		- 1 & 2 : time and mac address based
    		- 3 & 5 namespace based
-   		- 4 generated randomly 
+   		- 4 generated randomly
+  
+1. [Database Indexes - You Might Be Using Them Wrong](https://www.youtube.com/watch?v=RufupUDBtYY)
 
 ## Postgres specific
 
