@@ -152,12 +152,27 @@
    		- Postgres: pg_stat_user_indexes -> idx_scan = 0
    	 	- MySQL: sys.schema_unused_indexes
    	  	- SQL Server: sym.dm_db_index_usage_stats
-1. Sql window Functions
-	- [LAG()](https://www.datacamp.com/tutorial/sql-lag)
- 		- Allows you to get previous rows efficiently (hence lagging)
-   		- Takes an offset and a default
-     	- Should always specify ordering (order by) so that the "previous" row is in a correct sequence
-      	- Can also partition by (partition by) to ensure the "previous" row is from a correct "group", ex. Mcd, KFC, Starbucks. If we don't partition by the group, the "previous" row could be from the wrong "group" 
+1. [Sql window Functions](https://www.geeksforgeeks.org/sql/window-functions-in-sql/)
+	- SQL window functions allow performing calculations across a set of rows that are related to the current row, without collapsing the result into a single value. They are commonly used for tasks like aggregates, rankings and running totals. The OVER clause defines the “window” of rows for the calculation. It can:
+ 		- PARTITION BY: It divides the data into groups using PARTITION BY.
+ 		- ORDER BY: It specifies the order of rows within each group using ORDER BY.
+	- Examples
+ 		- Aggregate Window Functions 
+			- SUM
+ 			- AVG
+  			- COUNT
+   			- MAX
+   			- MIN
+      	- Ranking Window Functions
+      		- RANK (skips duplicates)
+      	 	- DENSE_RANK (does not skip duplicates)
+      	  	- ROW_NUMBER
+      	  	- PERCENT_RANK (ranking as a number between 0 and 1, percentage)
+		- [LAG](https://www.datacamp.com/tutorial/sql-lag)
+ 			- Allows you to get previous rows efficiently (hence lagging)
+   			- Takes an offset and a default
+     		- Should always specify ordering (order by) so that the "previous" row is in a correct sequence
+      		- Can also partition by (partition by) to ensure the "previous" row is from a correct "group", ex. Mcd, KFC, Starbucks. If we don't partition by the group, the "previous" row could be from the wrong "group" 
  
 ## Postgres specific
 
