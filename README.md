@@ -157,7 +157,7 @@
  		- PARTITION BY: It divides the data into groups using PARTITION BY.
  		- ORDER BY: It specifies the order of rows within each group using ORDER BY.
 	- Examples
- 		- Aggregate Window Functions 
+ 		- Aggregate Window Functions (NOTE: if order by is used here, it will force the window to expand gradually, hence values will change instead of being the same for all rows, [refer](https://medium.com/learning-sql/sql-window-function-visualized-fff1927f00f2))
 			- SUM
  			- AVG
   			- COUNT
