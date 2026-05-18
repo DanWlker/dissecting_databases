@@ -172,7 +172,10 @@
  			- Allows you to get previous rows efficiently (hence lagging)
    			- Takes an offset and a default
      		- Should always specify ordering (order by) so that the "previous" row is in a correct sequence
-      		- Can also partition by (partition by) to ensure the "previous" row is from a correct "group", ex. Mcd, KFC, Starbucks. If we don't partition by the group, the "previous" row could be from the wrong "group" 
+      		- Can also partition by (partition by) to ensure the "previous" row is from a correct "group", ex. Mcd, KFC, Starbucks. If we don't partition by the group, the "previous" row could be from the wrong "group"
+        	- [Another good reference](https://www.geeksforgeeks.org/postgresql/postgresql-lag-function/) 
+        - LEAD (opposite of lag, gets the following row)
+        - [NTILE](https://www.geeksforgeeks.org/postgresql/postgresql-ntile-function/)
  
 ## Postgres specific
 
