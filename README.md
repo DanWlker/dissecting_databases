@@ -152,6 +152,12 @@
    		- Postgres: pg_stat_user_indexes -> idx_scan = 0
    	 	- MySQL: sys.schema_unused_indexes
    	  	- SQL Server: sym.dm_db_index_usage_stats
+1. Sql window Functions
+	- [LAG()](https://www.datacamp.com/tutorial/sql-lag)
+ 		- Allows you to get previous rows efficiently (hence lagging)
+   		- Takes an offset and a default
+     	- Should always specify ordering (order by) so that the "previous" row is in a correct sequence
+      	- Can also partition by (partition by) to ensure the "previous" row is from a correct "group", ex. Mcd, KFC, Starbucks. If we don't partition by the group, the "previous" row could be from the wrong "group" 
  
 ## Postgres specific
 
